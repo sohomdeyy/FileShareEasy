@@ -1,7 +1,7 @@
 :root {
-  --main-bg-color: #edf5fe;
-  --light-blue: #03a9f4;
-  --dark-blue: #028bca;
+  --main-bg-color: #fef5ed;
+  --light-blue: #f46703;
+  --dark-blue: #ca5f02;
 }
 
 body {
@@ -19,7 +19,7 @@ body {
   position: absolute;
   top: 10px;
   left: 10px;
-  width: 150px;
+  width: 250px;
 }
 section.download {
   background: #fff;
