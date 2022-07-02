@@ -5,7 +5,7 @@ const multer=require('multer');
 const path=require('path');
 const File=require('../models/file');
 const {v4:uuid4}=require('uuid');
-
+const sendMail=require('../services/emailService')
 
 
 
@@ -47,5 +47,33 @@ router.post('/',(req,res)=>{
     
     });
 });
+router.post('/send',async (req,res)=>{
+    const {uuid,emailTo,emailFrom}=req.body;
+    //validate req      
+    if(!uuid ||!emailFrom ||!emailTo){
+        return res.status(422).send({error:'all fields are required'})
+    }
+    //get data from database
+    const file=await File.findOne({uuid:uuid});
+    if(file.sender){
+        return res.status(422).send({error:'email already sent'})
+    }
+    file.sender=emailFrom;
+    file.receiver=emailTo;
+    const response=await file.save();
+    //send email
+    sendMail({
+        from:emailFrom,
+        to:emailTo,
+        subject:'FILE SHARE EASY FILE SHARING',
+        text:`${emailFrom} shared a file with you`,
+        html: require('../services/emailTemplate')({
+            emailFrom:emailFrom,
+            downloadLink:`${process.env.APP_BASE_URL}/files/${uuid}`,
+            size:parseInt(file.size/1000)+'KB',
+            expires:'24 hours'
+        })
+    });
 
+})
 module.exports=router;
