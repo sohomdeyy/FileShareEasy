@@ -5,7 +5,7 @@ const multer=require('multer');
 const path=require('path');
 const File=require('../models/file');
 const {v4:uuid4}=require('uuid');
-// const file=require('fil')
+
 
 
 
@@ -42,7 +42,7 @@ router.post('/',(req,res)=>{
             path:req.file.path,
             size:req.file.size
         });
-        const resp=  file.save();
+        const resp=await  file.save();
     return res.json({file:`${process.env.APP_BASE_URL}/files/${resp.uuid}`})
     
     });
