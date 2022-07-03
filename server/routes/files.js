@@ -74,6 +74,6 @@ router.post('/send',async (req,res)=>{
             expires:'24 hours'
         })
     });
-    return res.send({success:true})
+    return res.send({success:true});
 })
 module.exports=router;
